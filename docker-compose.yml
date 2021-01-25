@@ -1,8 +1,8 @@
 version: "3.7"
 services:
   node:
-  build: .
-  init: true
-  restart: always
-  environment:
-    D_TOKEN: "Your Token"
+    build: .
+    init: true
+    restart: always
+    environment:
+      D_TOKEN: "Your Token"
