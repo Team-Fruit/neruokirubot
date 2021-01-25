@@ -90,8 +90,10 @@ function updateUserStatus(id: string, status: string) {
     if (b.action == "ne" && status == "ki") {
       const now = new Date().getTime();
       const diff = now - b.date;
+      sleepTime.set(id, s);
       return diff;
     } else {
+      sleepTime.set(id, s);
       return null;
     }
   } else {
