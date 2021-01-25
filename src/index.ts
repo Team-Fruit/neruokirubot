@@ -66,9 +66,10 @@ function msgReactionAdd(reaction: IReaction) {
       if (res) {
         const c = <TextChannel>g?.channels.cache.get(generalChannel);
         const netaTime = getTimeFromMills(res);
-        const nickName = g
+        let nickName = g
           ?.member(reaction.user_id)
           ?.nickname?.replace("@", "＠");
+        if (!nickName) nickName = g?.member(reaction.user_id)?.displayName;
         c.send(nickName + "は" + netaTime + "ねました。");
       }
       break;
