@@ -46,17 +46,32 @@ client.on("message", async (msg) => {
     msgRes.react(neru);
     nowMessage = msgRes;
     msg.delete();
+  } else if (msg.content == "/no status") {
+    let returnMsg = "";
+    sleepTime.forEach((value, key) => {
+      const dn = msg.guild?.member(key)?.displayName;
+      if (value.action == "ne") {
+        const neTime = getTimeFromMills(new Date().getTime() - value.date);
+        returnMsg += dn + ":" + neTime + " ねてる \n";
+      } else {
+        returnMsg += dn + ": おきてる\n";
+      }
+    });
   }
 });
 
 function msgReactionAdd(reaction: IReaction) {
   let g = client.guilds.cache.get(guildID);
+  const c = <TextChannel>g?.channels.cache.get(generalChannel);
+  let nickName = g?.member(reaction.user_id)?.nickname?.replace("@", "＠");
+  if (!nickName) nickName = g?.member(reaction.user_id)?.displayName;
   if (g?.member(reaction.user_id)?.user.bot) return;
   switch (reaction.emoji.name) {
     case "ne":
       g?.member(reaction.user_id)?.roles.remove(okiruRole);
       g?.member(reaction.user_id)?.roles.add(neruRole);
       updateUserStatus(reaction.user_id, "ne");
+      c.send(nickName + "はねました。ぽやしみ");
       break;
     case "ki":
       g?.member(reaction.user_id)?.roles.remove(neruRole);
@@ -64,12 +79,7 @@ function msgReactionAdd(reaction: IReaction) {
       const res = updateUserStatus(reaction.user_id, "ki");
       console.log(res);
       if (res) {
-        const c = <TextChannel>g?.channels.cache.get(generalChannel);
         const netaTime = getTimeFromMills(res);
-        let nickName = g
-          ?.member(reaction.user_id)
-          ?.nickname?.replace("@", "＠");
-        if (!nickName) nickName = g?.member(reaction.user_id)?.displayName;
         c.send(nickName + "は" + netaTime + "ねました。");
       }
       break;
