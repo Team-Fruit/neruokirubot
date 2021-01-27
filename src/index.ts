@@ -56,6 +56,8 @@ client.on("message", async (msg) => {
       } else {
         returnMsg += dn + ": おきてる\n";
       }
+      const c = <TextChannel>g?.channels.cache.get(generalChannel);
+      c.send(returnMsg);
     });
   }
 });
