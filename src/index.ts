@@ -56,6 +56,7 @@ client.on("message", async (msg) => {
       } else {
         returnMsg += dn + ": おきてる\n";
       }
+      let g = client.guilds.cache.get(guildID);
       const c = <TextChannel>g?.channels.cache.get(generalChannel);
       c.send(returnMsg);
     });
