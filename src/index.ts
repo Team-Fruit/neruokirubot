@@ -1,6 +1,26 @@
 import { Client, Emoji, Message, TextChannel } from "discord.js";
+import { Connection, ConnectionOptions, createConnection } from "typeorm";
+import { User } from "./entity/User";
+import { Sleep } from "./entity/Sleep";
 
 const client = new Client();
+
+const options: ConnectionOptions = {
+  type: "sqlite",
+  database: "../db/db.sqlite3",
+  entities: [User, Sleep],
+  synchronize: true,
+};
+
+let connection: Connection | null = null;
+
+async function connectDB() {
+  connection = await createConnection(options);
+  const userRepository = connection.getRepository(User);
+  console.log(await userRepository.count());
+}
+
+connectDB();
 
 client.on("ready", () => {
   console.log("Discord Bot Ready");
@@ -36,34 +56,81 @@ interface ISleep {
   date: number;
 }
 
+async function initBotMessage(msg: Message) {
+  const msgRes = await (<TextChannel>client.channels.cache.get(noChannel)).send(
+    "このメッセージにリアクションしてね(⋈◍＞◡＜◍)。✧♡"
+  );
+  await msgRes.react(okiru);
+  await msgRes.react(neru);
+  nowMessage = msgRes;
+  await msg.delete();
+}
+
+async function sendUserStatus(msg: Message) {
+  let returnMsg = "";
+  sleepTime.forEach((value, key) => {
+    let nickName = g?.member(key)?.nickname?.replace("@", "＠");
+    if (!nickName) nickName = g?.member(key)?.displayName;
+    if (value.action == "ne") {
+      const neTime = getTimeFromMills(new Date().getTime() - value.date);
+      returnMsg += nickName + ":" + neTime + " ねてる \n";
+    } else {
+      returnMsg += nickName + ": おきてる\n";
+    }
+  });
+  let g = client.guilds.cache.get(guildID);
+  const c = <TextChannel>g?.channels.cache.get(generalChannel);
+  await c.send(returnMsg);
+}
+
+async function test(msg: Message) {
+  await msg.channel.send({
+    embed: {
+      title: "おねんねリスト",
+      color: 11715384,
+      fields: [
+        {
+          name: "kano_ichinose#3333",
+          value: "🟢 おきてる\n⏲️ 3時間34分19秒",
+        },
+        {
+          name: "I A#1234",
+          value: "🟣 ねてる\n⏲️ 13時間24分49秒",
+        },
+      ],
+    },
+  });
+}
+
 client.on("message", async (msg) => {
   if (msg.author.bot) return;
-  if (msg.content == "/no init") {
-    const msgRes = await (<TextChannel>(
-      client.channels.cache.get(noChannel)
-    )).send("このメッセージにリアクションしてね(⋈◍＞◡＜◍)。✧♡");
-    msgRes.react(okiru);
-    msgRes.react(neru);
-    nowMessage = msgRes;
-    msg.delete();
-  } else if (msg.content == "/no status") {
-    let returnMsg = "";
-    sleepTime.forEach((value, key) => {
-      const dn = msg.guild?.member(key)?.displayName;
-      if (value.action == "ne") {
-        const neTime = getTimeFromMills(new Date().getTime() - value.date);
-        returnMsg += dn + ":" + neTime + " ねてる \n";
-      } else {
-        returnMsg += dn + ": おきてる\n";
-      }
-      let g = client.guilds.cache.get(guildID);
-      const c = <TextChannel>g?.channels.cache.get(generalChannel);
-      c.send(returnMsg);
-    });
+  const args = msg.content.replace(/　+/g, " ").slice(3).trim().split(/ + /);
+  switch (args[0]) {
+    case "init":
+      await initBotMessage(msg);
+      break;
+    case "status":
+      await sendUserStatus(msg);
+      break;
+    case "test":
+      await test(msg);
+      break;
   }
 });
 
-function msgReactionAdd(reaction: IReaction) {
+async function msgReactionAdd(reaction: IReaction) {
+  const userRepository = connection?.getRepository(User);
+  const user = await userRepository?.findOne({ discordId: reaction.user_id });
+  if (!user) {
+    // Userが未登録だった時
+    const newUser = userRepository?.create({
+      discordId: reaction.user_id,
+    });
+    await userRepository?.save(<User>newUser);
+  } else {
+  }
+
+  /*
   let g = client.guilds.cache.get(guildID);
   const c = <TextChannel>g?.channels.cache.get(generalChannel);
   let nickName = g?.member(reaction.user_id)?.nickname?.replace("@", "＠");
@@ -87,6 +154,7 @@ function msgReactionAdd(reaction: IReaction) {
       }
       break;
   }
+   */
   initMsg();
 }
 function msgReactionRemove(reaction: IReaction) {
