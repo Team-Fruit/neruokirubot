@@ -2,7 +2,7 @@
 
 ### 寝る起きるBot
 
-[kokoa0429/neruokirubot](https://github.com/kokoa0429/neruokirubot)
+[aa-proj/neruokirubot](https://github.com/aa-proj/neruokirubot)
 
 ![がぞう](https://cdn.discordapp.com/attachments/803321643803213834/803349412356816906/unknown.png)
 
