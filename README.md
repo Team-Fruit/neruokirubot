@@ -2,9 +2,8 @@
 
 ### 寝る起きるBot
 
-[kokoa0429/neruokirubot](https://github.com/kokoa0429/neruokirubot)
+[Team-Fruit/neruokirubot](https://github.com/Team-Fruit/neruokirubot)
 
-![がぞう](https://cdn.discordapp.com/attachments/803321643803213834/803349412356816906/unknown.png)
 
 ## 機能
 
@@ -15,7 +14,7 @@
 
 `😴寝た起きたbot` チャンネルの
 
-![がぞう](https://cdn.discordapp.com/attachments/803321643803213834/803349275961589790/unknown.png)
+画像をここに挿入
 
 に  `起`  `寝` リアクションをしてください。
 
