@@ -14,7 +14,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: vcbot
+  IMAGE_NAME: neruokirubot
 
 jobs:
   # Run tests.
