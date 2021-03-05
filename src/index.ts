@@ -2,6 +2,7 @@ import { Client, Emoji, Message, TextChannel } from "discord.js";
 import { Connection, ConnectionOptions, createConnection } from "typeorm";
 import { User } from "./entity/User";
 import { Sleep } from "./entity/Sleep";
+import config from "./config";
 
 // Discordクライアント
 const client = new Client();
@@ -34,19 +35,17 @@ client.on("ready", () => {
   console.log("Discord Bot Ready");
 });
 
-// いろんな定数 TODO コンフィグ化
-const neru = "<:ne:803311475502350398>";
-const neruEmojiID = "803311475502350398";
-const okiru = "<:ki:803311475325796434>";
-const okiruEmojiID = "803311475325796434";
+// いろんな定数
+const neru = `<:${config.emoji.neru}:${config.emoji.neruEmojiID}>`;
+const okiru = `<:${config.emoji.okiru}:${config.emoji.okiruEmojiID}>`;
 
-const neruRole = "803305899606409258";
-const okiruRole = "803305973103329310";
+const neruRole = config.guild.neruRole;
+const okiruRole = config.guild.okiruRole;
 
-const noChannel = "803321643803213834";
-const generalChannel = "606109479003750442";
+const noChannel = config.guild.noChannel;
+const generalChannel = config.guild.generalChannel;
 
-const guildID = "606109479003750440";
+const guildID = config.guild.guildID;
 
 // 今リアクションを待機してるメッセージ
 let nowMessage: Message | null = null;
