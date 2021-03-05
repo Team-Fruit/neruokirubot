@@ -1,4 +1,5 @@
-node_modules
-build
-db
-.idea
+node_modules/
+build/
+db/
+.idea/
+!src/db/

@@ -1,7 +1,8 @@
 import { Client, Emoji, Message, TextChannel } from "discord.js";
 import { Connection, ConnectionOptions, createConnection } from "typeorm";
-import { User } from "./entity/User";
-import { Sleep } from "./entity/Sleep";
+import { User } from "./models/entities/User";
+import { Sleep } from "./models/entities/Sleep";
+import { Sleeps, Users } from './models';
 
 // Discordクライアント
 const client = new Client();
@@ -19,7 +20,7 @@ let connection: Connection | null = null;
 
 async function connectDB() {
   connection = await createConnection(options);
-  const userRepository = connection.getRepository(User);
+  const userRepository = Users;
   console.log(await userRepository.count());
   await connection.query("PRAGMA foreign_keys=OFF");
   await connection.synchronize();
@@ -35,10 +36,10 @@ client.on("ready", () => {
 });
 
 // いろんな定数 TODO コンフィグ化
-const neru = "<:ne:803311475502350398>";
 const neruEmojiID = "803311475502350398";
-const okiru = "<:ki:803311475325796434>";
 const okiruEmojiID = "803311475325796434";
+const neru = `<:ne:${neruEmojiID}>`;
+const okiru = `<:ki:${okiruEmojiID}>`;
 
 const neruRole = "803305899606409258";
 const okiruRole = "803305973103329310";
@@ -143,8 +144,8 @@ async function msgReactionAdd(reaction: IReaction) {
   const general = <TextChannel>g?.channels.cache.get(generalChannel); // TODO
 
   if (g?.member(reaction.user_id)?.user.bot) return;
-  const userRepository = connection?.getRepository(User);
-  const sleepRepository = connection?.getRepository(Sleep);
+  const userRepository = Users
+  const sleepRepository = Sleeps
   const user = await userRepository?.findOne({ discordId: reaction.user_id });
   if (!user) {
     // Userが未登録だった時
