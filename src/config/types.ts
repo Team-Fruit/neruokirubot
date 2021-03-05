@@ -1,5 +1,3 @@
-import { type } from "os";
-
 export type Config ={
   emoji: {
     neruEmojiID: number;
@@ -8,10 +6,10 @@ export type Config ={
     okiru: string;
   };
   guild: {
-    guildID: number;
-    noChannel: number;
-    generalChannel: number;
-    neruRole: number;
-    okiruRole: number;
+    guildID: string;
+    noChannel: string;
+    generalChannel: string;
+    neruRole: string;
+    okiruRole: string;
   };
 }
