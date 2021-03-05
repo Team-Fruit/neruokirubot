@@ -35,10 +35,10 @@ client.on("ready", () => {
 });
 
 // いろんな定数 TODO コンフィグ化
-const neru = "<:ne:803311475502350398>";
 const neruEmojiID = "803311475502350398";
-const okiru = "<:ki:803311475325796434>";
 const okiruEmojiID = "803311475325796434";
+const neru = `<:ne:${neruEmojiID}>`;
+const okiru = `<:ki:${okiruEmojiID}>`;
 
 const neruRole = "803305899606409258";
 const okiruRole = "803305973103329310";
