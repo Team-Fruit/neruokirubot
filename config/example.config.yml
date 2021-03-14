@@ -1,0 +1,13 @@
+# example
+emoji:
+  neruEmojiID: 803311475502350398
+  okiruEmojiID: 803311475325796434
+  neru: ne
+  okiru: ki
+
+guild:
+guildID: 606109479003750440
+noChannel: 803321643803213834
+generalChannel: 606109479003750442
+neruRole: 803305899606409258
+okiruRole: 803305973103329310
