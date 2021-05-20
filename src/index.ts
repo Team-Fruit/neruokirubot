@@ -1,4 +1,11 @@
-import { Client, Emoji, Message, TextChannel } from "discord.js";
+import {
+  Client,
+  Emoji,
+  Message,
+  MessageAttachment,
+  MessageEmbed,
+  TextChannel,
+} from "discord.js";
 import { Connection, ConnectionOptions, createConnection } from "typeorm";
 import { User } from "./entity/User";
 import { Sleep } from "./entity/Sleep";
@@ -100,9 +107,17 @@ async function sendUserStatus(msg: Message) {
 
 // テスト用リッチメッセージ
 async function test(msg: Message) {
+  const imgattach = new MessageAttachment("./test.png");
+
+  // const ripu = new MessageEmbed().attachFiles(imgattach);
+
   await msg.channel.send({
+    files: [imgattach],
     embed: {
       title: "おねんねリスト",
+      image: {
+        url: "attachment://test.png",
+      },
       color: 11715384,
       fields: [
         {
